@@ -64,7 +64,7 @@ func handler(w http.ResponseWriter, r *http.Request){
 
 	var jsonStr = []byte("")
 
-	if r.Method == http.MethodPost {
+	if r.Method == http.MethodPost || r.Method == http.MethodPut {
 		body, err := ioutil.ReadAll(r.Body)
 		fatal(err)
 		fmt.Printf("Body: %v\n", string(body))
