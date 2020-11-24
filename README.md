@@ -9,3 +9,9 @@ contoh
 contoh konfigurasi di atas, segala request ke url http://localhost:8080/ akan di alihkan ke https://github.com/.
 
 jadi jika http://localhost:8080/books/ maka akan di alihkan ke https://github.com/books/.
+
+Versi 1.1.0
+- Fix karakter kosong di file ports.txt
+- support profile
+contoh 
+  > dev-proxy dev   => akan me refer ke file ports-dev.txt
