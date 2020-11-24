@@ -16,7 +16,12 @@ import (
 var ports map[string]string
 
 func main() {
-	readPorts()
+	profile :=  ""
+	if len(os.Args) > 1 {
+		profile = os.Args[1]
+		fmt.Println("Profile " + profile)
+	}
+	readPorts(profile)
 
 	serverMuxA := http.NewServeMux()
 	serverMuxA.HandleFunc("/", defaultHandler)
@@ -34,8 +39,18 @@ func main() {
 	http.ListenAndServe(":1000", serverMuxA)
 }
 
-func readPorts(){
-	file, err := os.Open("ports.txt")
+func readPorts(profile string){
+	fileName := "ports.txt"
+	if len(strings.TrimSpace(profile)) > 0 {
+		fileName = "ports-"+profile+".txt"
+		if !fileExists(fileName) {
+			fmt.Println("File " + fileName + " not exist")
+			fmt.Println("Open default file ports.txt")
+			fileName = "ports.txt"
+		}
+	}
+
+	file, err := os.Open(fileName)
 	fatal(err)
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
@@ -116,4 +131,12 @@ func copyHeader(source http.Header, dest *http.Header){
 			dest.Add(n, vv)
 		}
 	}
+}
+
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }
