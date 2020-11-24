@@ -41,7 +41,11 @@ func readPorts(){
 	scanner := bufio.NewScanner(file)
 	ports = map[string]string{}
 	for scanner.Scan() {
-		mapPort := strings.Split(scanner.Text(), ";")
+		lineStr := scanner.Text()
+		if len(strings.TrimSpace(lineStr)) == 0{
+			continue
+		}
+		mapPort := strings.Split(lineStr, ";")
 		ports[mapPort[0]] = mapPort[1]
 	}
 
